@@ -22,7 +22,12 @@ public class Fishing : MonoBehaviour
 
     public GameObject rod;
     public GameObject[] Fish;
+    public GameObject CurrentFish;
+    public GameObject Ripple;
+    public GameObject RodReelEnd;
     public Transform FishSpawn;
+    public Transform FishStorage;
+    private float randomSploosh;
 
     private void Awake()
     {
@@ -56,6 +61,10 @@ public class Fishing : MonoBehaviour
                 {
                     isFishing = true;
                     FishingPrompt.SetActive(false);
+                }
+                if(SittingState == 101)
+                {
+                    SittingState = 102;
                 }
             }
         }
@@ -197,10 +206,36 @@ public class Fishing : MonoBehaviour
 
         //miniGame Function
         if(SittingState == 101)
+        {;
+            Timer += Time.deltaTime;
+            if(Timer >= randomSploosh)
+            {
+                randomSploosh = Random.Range(0.3f, 1.5f);
+                Timer = 0;
+                Instantiate(Ripple, new Vector3(-44.4f, -0.96f, 63f), Ripple.transform.rotation);
+            }
+        }
+        if(SittingState == 102)
         {
-            SittingState = 4; //make the animation + spawn the fish on ground
-            ///put this in a future state
-            Instantiate(Fish[fishFished], FishSpawn.position,transform.rotation);
+            SittingState = 103;
+            CurrentFish = Instantiate(Fish[fishFished], FishSpawn.position, Fish[fishFished].transform.rotation);
+        }
+        if(SittingState == 103)
+        {
+            CurrentFish.transform.position = Vector3.MoveTowards(CurrentFish.transform.position, RodReelEnd.transform.position, step);
+            if(Vector3.Distance(CurrentFish.transform.position, RodReelEnd.transform.position) < 0.001f)
+            {
+                SittingState = 104;
+            }
+        }
+        if(SittingState == 104)
+        {
+            fishTicInt = 1;
+            SittingState = 4;
+            CurrentFish.transform.position = FishStorage.position;
+            CurrentFish.transform.rotation = Quaternion.Euler(Random.rotation.eulerAngles);
+            CurrentFish.AddComponent<Rigidbody>();
+            CurrentFish.AddComponent<BoxCollider>();
         }
     }
 }

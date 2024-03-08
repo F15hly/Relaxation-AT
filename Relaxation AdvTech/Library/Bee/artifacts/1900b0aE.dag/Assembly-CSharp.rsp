@@ -359,6 +359,7 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.6f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Scenes/Binoculars/Binoculars.cs"
 "Assets/Scenes/Fishing/Fishing.cs"
+"Assets/Scenes/Fishing/RippleFX.cs"
 "Assets/Scenes/Player/CameraRotation.cs"
 "Assets/Scenes/Player/Inputs.cs"
 "Assets/Scenes/Player/InputSystems.cs"
