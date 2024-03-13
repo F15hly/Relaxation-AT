@@ -29,6 +29,9 @@ public class Fishing : MonoBehaviour
     public Transform FishStorage;
     private float randomSploosh;
 
+    public AudioSource Splash;
+    public AudioClip SplashClip;
+
     private void Awake()
     {
         inputs = GameObject.FindGameObjectWithTag("Player").GetComponent<Inputs>();
@@ -206,9 +209,14 @@ public class Fishing : MonoBehaviour
 
         //miniGame Function
         if(SittingState == 101)
-        {;
+        {
             Timer += Time.deltaTime;
-            if(Timer >= randomSploosh)
+            if(!Splash.isPlaying)
+            {
+                Splash.PlayOneShot(SplashClip);
+            }
+
+            if (Timer >= randomSploosh)
             {
                 randomSploosh = Random.Range(0.3f, 1.5f);
                 Timer = 0;
@@ -217,6 +225,7 @@ public class Fishing : MonoBehaviour
         }
         if(SittingState == 102)
         {
+            StartCoroutine(SplashStopDelay());
             SittingState = 103;
             CurrentFish = Instantiate(Fish[fishFished], FishSpawn.position, Fish[fishFished].transform.rotation);
         }
@@ -237,5 +246,11 @@ public class Fishing : MonoBehaviour
             CurrentFish.AddComponent<Rigidbody>();
             CurrentFish.AddComponent<BoxCollider>();
         }
+    }
+
+    IEnumerator SplashStopDelay()
+    {
+        yield return new WaitForSeconds(.4f);
+        Splash.Stop();
     }
 }

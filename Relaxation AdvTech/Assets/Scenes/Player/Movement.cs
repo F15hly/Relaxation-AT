@@ -14,10 +14,15 @@ public class Movement : MonoBehaviour
     public float sprintSpeed = 2f;
     private float speed;
 
-    //public AudioSource runAudio;
+    public AudioSource PlayerAudio;
+    public LayerMask woodLayer,snowLayer;
+    public AudioClip[] FootStepArray;
+    public AudioClip CurrentStepSound;
+    private float footstepCycleTimer;
 
     private void Awake()
     {
+        Cursor.visible = false;
         speed = walkSpeed;
         inputs = gameObject.GetComponent<Inputs>();
         controller = gameObject.GetComponent<CharacterController>();
@@ -34,6 +39,18 @@ public class Movement : MonoBehaviour
         else
         {
             isMoving = false;
+        }
+
+        if(isMoving)
+        {
+            //change to every 0.5 seconds
+            footstepCycleTimer += Time.deltaTime;
+            if(footstepCycleTimer >= 0.5f)
+            {
+                footstepCycleTimer = 0;
+                FootStepFunction();
+                PlayerAudio.PlayOneShot(CurrentStepSound);
+            }
         }
 
         //WASD
@@ -61,6 +78,21 @@ public class Movement : MonoBehaviour
         else
         {
             speed = walkSpeed;
+        }
+    }
+
+    private void FootStepFunction()
+    {
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 10f, snowLayer))
+        {
+            CurrentStepSound = FootStepArray[Random.Range(0, 4)];
+            Debug.Log("Snow");
+        }
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 10f, woodLayer))
+        {
+            CurrentStepSound = FootStepArray[Random.Range(4, 8)];
+            Debug.Log("Wood");
         }
     }
 }
