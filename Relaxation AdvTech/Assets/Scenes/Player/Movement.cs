@@ -22,7 +22,6 @@ public class Movement : MonoBehaviour
 
     private void Awake()
     {
-        Cursor.visible = false;
         speed = walkSpeed;
         inputs = gameObject.GetComponent<Inputs>();
         controller = gameObject.GetComponent<CharacterController>();
