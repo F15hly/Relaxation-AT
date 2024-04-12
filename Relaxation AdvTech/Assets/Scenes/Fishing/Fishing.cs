@@ -6,12 +6,16 @@ public class Fishing : MonoBehaviour
 {
     Inputs inputs;
 
+    public LineRenderer LR;
+    public GameObject LineStart;
+
     public GameObject player;
     public GameObject playerCam;
     public GameObject leftHand;
     public GameObject SittingSpot;
 
     public GameObject FishingPrompt;
+    public GameObject ReelUp;
 
     public bool isFishing;
     public int SittingState;
@@ -92,11 +96,11 @@ public class Fishing : MonoBehaviour
 
     public void MiniGame()
     {
-        FishTicTimer += Time.deltaTime * 60;
+        FishTicTimer += Time.deltaTime;
         if (FishTicTimer >= 5)
         {
             FishTicTimer = 0;
-            fishTicInt = Mathf.RoundToInt(Random.Range(1, 24));
+            fishTicInt = Mathf.RoundToInt(Random.Range(1, 8));
         }
         if(fishTicInt == 2)
         {
@@ -161,6 +165,9 @@ public class Fishing : MonoBehaviour
         }
         if(SittingState == 4)
         {
+            LR.enabled = true;
+            LR.SetPosition(0, LineStart.transform.position);
+            LR.SetPosition(1, new Vector3(-44.4f, -2f, 63f));
             MiniGame();
             if (inputs.Interacting)
             {
@@ -169,6 +176,7 @@ public class Fishing : MonoBehaviour
         }
         if(SittingState == 5)
         {
+            LR.enabled = false;
             playerCam.transform.rotation = Quaternion.Lerp(playerCam.transform.rotation, Quaternion.Euler(9.329f, -76.793f, 0), step);
             Timer += Time.deltaTime;
             leftHand.transform.localPosition = Vector3.MoveTowards(leftHand.transform.localPosition, new Vector3(-2.3f, -1.092f, 0f), step);
@@ -203,6 +211,7 @@ public class Fishing : MonoBehaviour
         {
             isFishing = false;
             FishingPrompt.SetActive(true);
+            SittingState = 0;
         }
 
 
@@ -210,6 +219,7 @@ public class Fishing : MonoBehaviour
         //miniGame Function
         if(SittingState == 101)
         {
+            ReelUp.SetActive(true);
             Timer += Time.deltaTime;
             if(!Splash.isPlaying)
             {
@@ -228,6 +238,7 @@ public class Fishing : MonoBehaviour
             StartCoroutine(SplashStopDelay());
             SittingState = 103;
             CurrentFish = Instantiate(Fish[fishFished], FishSpawn.position, Fish[fishFished].transform.rotation);
+            ReelUp.SetActive(false);
         }
         if(SittingState == 103)
         {
@@ -236,6 +247,8 @@ public class Fishing : MonoBehaviour
             {
                 SittingState = 104;
             }
+            LR.SetPosition(0, LineStart.transform.position);
+            LR.SetPosition(1, CurrentFish.transform.position);
         }
         if(SittingState == 104)
         {

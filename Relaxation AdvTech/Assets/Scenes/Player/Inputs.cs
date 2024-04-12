@@ -19,6 +19,8 @@ public class Inputs : MonoBehaviour
     public bool Paused;
 
     public GameObject PauseMenu;
+    public GameObject Rhand;
+    public GameObject Barrel;
 
     private void OnEnable()
     {
@@ -57,6 +59,18 @@ public class Inputs : MonoBehaviour
             GetComponent<CameraRotation>().enabled = false;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
+        }
+        if(Rhand.transform.childCount != 0)
+        {
+            if(Interacting && Barrel.GetComponent<BarreledFish>().CanDrop)
+            {
+                Rhand.transform.GetChild(0).GetComponent<Rigidbody>().useGravity = true;
+                Rhand.transform.GetChild(0).GetComponent<Collider>().enabled = true;
+                Rhand.transform.GetChild(0).GetComponent<FishDespawn>().enabled = true;
+                Rhand.transform.GetChild(0).transform.parent = null;
+                Rhand.transform.localPosition = new Vector3(0.505996704f, -0.322999954f, 0);
+                Barrel.GetComponent<BarreledFish>().CanDrop = false;
+            }
         }
     }
 
