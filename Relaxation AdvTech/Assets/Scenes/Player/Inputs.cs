@@ -16,6 +16,9 @@ public class Inputs : MonoBehaviour
     public bool Firing;
     public bool Interacting;
     public bool Reloading;
+    public bool Paused;
+
+    public GameObject PauseMenu;
 
     private void OnEnable()
     {
@@ -29,6 +32,7 @@ public class Inputs : MonoBehaviour
             inputSystems.PlayerInputs.Fire.performed += i => Firing = i.ReadValueAsButton();
             inputSystems.PlayerInputs.Interact.performed += i => Interacting = i.ReadValueAsButton();
             inputSystems.PlayerInputs.Reload.performed += i => Reloading = i.ReadValueAsButton();
+            inputSystems.PlayerInputs.Pause.performed += i => Paused = i.ReadValueAsButton();
         }
         inputSystems.Enable();
     }
@@ -45,5 +49,29 @@ public class Inputs : MonoBehaviour
 
         horizontalInp = rotationInput.x;
         verticalInp = rotationInput.y;
+
+        if(Paused)
+        {
+            PauseMenu.SetActive(true);
+            GetComponent<Movement>().enabled = false;
+            GetComponent<CameraRotation>().enabled = false;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+    }
+
+    public void Exit()
+    {
+        Application.Quit();
+    }
+
+    public void Resume()
+    {
+        Paused = false;
+        PauseMenu.SetActive(false);
+        GetComponent<Movement>().enabled = true;
+        GetComponent<CameraRotation>().enabled = true;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 }

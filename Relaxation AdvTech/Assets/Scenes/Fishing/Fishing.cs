@@ -151,7 +151,7 @@ public class Fishing : MonoBehaviour
             Timer += Time.deltaTime;
             rod.transform.parent = leftHand.transform;
             leftHand.transform.localPosition = Vector3.MoveTowards(leftHand.transform.localPosition, new Vector3(-0.55f, -0.5f, 0.8f), step);
-            leftHand.transform.localRotation = Quaternion.Lerp(leftHand.transform.localRotation, Quaternion.Euler(0,0,135f), step);
+            //leftHand.transform.localRotation = Quaternion.Lerp(leftHand.transform.localRotation, Quaternion.Euler(0,0,135f), step);
             if (Timer >= 3)
             {
                 SittingState = 4;
