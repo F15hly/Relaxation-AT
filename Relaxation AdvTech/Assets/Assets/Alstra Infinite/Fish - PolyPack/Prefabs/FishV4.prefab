@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1272374852726147370}
   - component: {fileID: 2740363109677844111}
   - component: {fileID: 136039220442444357}
-  - component: {fileID: 8772738931944244070}
   m_Layer: 0
   m_Name: FishV4
   m_TagString: Fish
@@ -84,15 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8772738931944244070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937588542411740048}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec453f404e5b7014c9e15518ad367df0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
